@@ -26,7 +26,10 @@ public class PocApplication {
 
     @Bean
     public CacheManager cacheManager() {
-        final CacheBuilder builder = CacheBuilder.newBuilder().maximumSize(10000).expireAfterAccess(5, TimeUnit.MINUTES);
+        final CacheBuilder builder = CacheBuilder.
+                newBuilder().maximumSize(10000).
+                expireAfterWrite(10, TimeUnit.MINUTES).
+                expireAfterAccess(10, TimeUnit.MINUTES);
         final GuavaCacheManager manager = new GuavaCacheManager();
         manager.setCacheBuilder(builder);
         return manager;

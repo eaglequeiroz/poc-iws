@@ -1,28 +1,22 @@
 package com.isobar.poc.service;
 
 import com.isobar.poc.model.Band;
+import com.isobar.poc.repository.BandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Cacheable(value = {"bands"})
 public class BandService {
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    @Value("${externalUrl}")
-    private String externalEndpoint;
+    private BandRepository bandRepository;
 
     public List<Band> findAll() {
-        Band[] bands = restTemplate.getForObject(externalEndpoint, Band[].class);
+        Band[] bands = bandRepository.getRemote();
         return Arrays.asList(bands);
     }
 

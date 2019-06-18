@@ -2,27 +2,39 @@ package com.isobar.poc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.List;
+import java.io.Serializable;
 
 @Data
-@Entity
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Band {
+public class Band implements Serializable {
 
-    @Id
+    private static final long serialVersionUID = -2055851982233863892L;
+
+    @NonNull
     private String id;
 
+    @NonNull
     private String name;
+
+    @NonNull
     private String image;
+
+    @NonNull
     private String genre;
+
+    @NonNull
     private String biography;
+
+    @NonNull
     private Integer numPlays;
 
-    @OneToMany
-    private List<Volume> albumList;
+    @NonNull
+    private String[] albums;
+
+    private Album[][] albumList;
 
 }

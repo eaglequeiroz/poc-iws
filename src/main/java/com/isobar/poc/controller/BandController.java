@@ -3,13 +3,12 @@ package com.isobar.poc.controller;
 import com.isobar.poc.model.Band;
 import com.isobar.poc.service.BandService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/bandApi")
@@ -18,22 +17,8 @@ public class BandController {
     private BandService bandService;
 
     @Autowired
-    private RestTemplate restTemplate;
-
-    @Value("${externalUrl}")
-    private String externalEndpoint;
-
-    @Autowired
     public BandController(BandService bandService) {
         this.bandService = bandService;
-    }
-
-
-    @PostMapping
-    public List<Band> createDataFromExternalEndpoint() {
-        List<Object> objectList = Arrays.asList(Objects.requireNonNull(restTemplate.getForObject(externalEndpoint, Object[].class)));
-        List<Band> bandList = (List<Band>)(List<?>) objectList;
-        return bandService.createRegistersByExternalEndpoint(bandList);
     }
 
     @GetMapping

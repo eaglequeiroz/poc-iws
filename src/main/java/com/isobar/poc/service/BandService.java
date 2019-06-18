@@ -1,34 +1,34 @@
 package com.isobar.poc.service;
 
 import com.isobar.poc.model.Band;
-import com.isobar.poc.repository.BandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Cacheable(value = {"bands"})
 public class BandService {
 
-    private BandRepository bandRepository;
-
     @Autowired
-    public BandService(BandRepository bandRepository) {
-        this.bandRepository = bandRepository;
-    }
+    private RestTemplate restTemplate;
 
-    public List<Band> createRegistersByExternalEndpoint(List<Band> bands) {
-        for (Band band : bands) {
-            bandRepository.save(band);
-        }
-        return bands;
-    }
+    @Value("${externalUrl}")
+    private String externalEndpoint;
 
     public List<Band> findAll() {
-        return bandRepository.findAll();
+        Band[] bands = restTemplate.getForObject(externalEndpoint, Band[].class);
+        return Arrays.asList(bands);
     }
 
     public List<Band> findByName(String name) {
-        return bandRepository.findByNameStartsWithOrderByNameAsc(name);
+        List<Band> bands = findAll();
+        bands = bands.stream().filter(band -> band.getName().toLowerCase().contains(name.toLowerCase())).collect(Collectors.toList());
+        return bands;
     }
 }

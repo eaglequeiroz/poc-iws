@@ -2,26 +2,33 @@ package com.isobar.poc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.time.LocalDate;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Date;
 
-@Entity
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Album {
+class Album implements Serializable {
 
-    @Id
+    private static final long serialVersionUID = 6241982327602212448L;
+
+    @NonNull
     private String id;
 
+    @NonNull
     private String name;
-    private String image;
-    private LocalDate releasedDate;
-    private String bandId;
 
-    @OneToMany
-    private List<Track> tracks;
+    @NonNull
+    private String image;
+
+    @NonNull
+    private String band;
+
+    @NonNull
+    private Date releasedDate;
+
+    private Track[] tracks;
 }

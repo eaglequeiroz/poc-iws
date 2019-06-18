@@ -2,18 +2,25 @@ package com.isobar.poc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.io.Serializable;
 
-@Entity
 @Data
+@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Track {
+class Track implements Serializable {
 
-    @Id
+
+    private static final long serialVersionUID = 8483490507789532278L;
+
+    @NonNull
     private String id;
 
+    @NonNull
     private String name;
+
+    @NonNull
     private Integer duration;
 }
